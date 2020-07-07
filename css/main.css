@@ -1,0 +1,298 @@
+* {
+    position: relative;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+header,
+footer {
+    height: 120px;
+    line-height: 120px;
+    text-align: center;
+    color: #000;
+    text-transform: uppercase;
+    font-size: 36px;
+    background: #fff2cc;
+}
+
+body {
+    background: #d5e8d4;
+}
+
+.news_feed_header {
+    font-size: 24px;
+    margin: 15px 0 15px 25px;
+}
+
+.news_feed_header button {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    background: rgb(209, 134, 134);
+    border: 1px solid #fff;
+    color: #000;
+    padding: 5px 15px;
+}
+
+.news_feed {
+    list-style: none;
+}
+
+.news_container {
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+    grid-template-rows: 200px;
+    width: 60%;
+    margin: 25px auto;
+}
+
+.news_image {
+    border: 1px solid #000;
+    height: 200px;
+    line-height: 200px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.news_image img {
+    width: 100%;
+    height: 100%;
+}
+
+.news_description_container {
+    display: grid;
+    grid-template-rows: 50px 1fr;
+}
+
+.news_title {
+    font-size: 24px;
+    margin-left: 25px;
+    margin-top: 10px;
+}
+
+.news_description {
+    margin: 5px 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+footer {
+    width: 100%;
+    background: rgb(236, 236, 236);
+    height: 75px;
+    outline: 2px solid #637e61;
+    line-height: 75px;
+}
+
+.popup_create_new {
+    height: 610px;
+    width: 450px;
+    background: white;
+    border: 3px solid #000;
+    padding: 15px;
+    margin: 100px auto;
+}
+
+.popup_create_new span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-transform: uppercase;
+    border: 1px solid #000;
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    line-height: 25px;
+    border-radius: 100%;
+    background: #fff;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.popup_create_new span:hover {
+    color: red;
+    border-color: red;
+    transform: rotate(180deg);
+}
+
+.popup_create_new input {
+    width: 100%;
+    height: 25px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.popup_inputs_container textarea {
+    width: 100%;
+    height: 300px;
+    resize: none;
+}
+
+.popup_inputs_container {
+    margin-top: 15px;
+}
+
+.popup_header {
+    text-align: center;
+    font-weight: bold;
+}
+
+/* article html*/
+
+.article_container {
+    padding: 0 15px 0 15px;
+}
+
+.buttons_tab {
+    text-align: right;
+    padding: 15px 35px;
+}
+
+.buttons_tab button {
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.buttons_tab button:first-child {
+    background: pink;
+    border: 1px solid red;
+}
+
+.buttons_tab button:last-child {
+    background: rgb(155, 209, 253);
+    border: 1px solid blue;
+}
+
+.article_header {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+}
+
+.article_header div:first-child {
+    font-size: 32px;
+    text-align: center;
+}
+
+.article_header div:last-child {
+    display: flex;
+    justify-content: space-around;
+}
+
+.article_image {
+    width: 50%;
+    height: 450px;
+    border: 2px solid purple;
+    margin: auto;
+}
+
+.article_image img {
+    width: 100%;
+    height: 100%;
+}
+
+.article_description {
+    margin-top: 50px;
+}
+
+.comments_container {
+    background: rgb(255, 255, 183);
+    padding-bottom: 50px;
+}
+
+.comments_header {
+    text-align: center;
+    font-size: 32px;
+    padding: 10px;
+}
+
+.comments_inputs_container {
+    width: 600px;
+    height: 350px;
+    background: white;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 3fr 1fr;
+    border: 2px solid #000;
+    grid-auto-flow: column;
+    margin: 50px auto;
+}
+
+.comments_name_inputs_container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.comments_name_inputs_container input {
+    height: 20px;
+    margin: auto;
+    width: 90%;
+}
+
+.comments_inputs_container textarea {
+    width: 570px;
+    height: 90%;
+    margin: auto;
+    padding: 5px;
+    resize: none;
+}
+
+.comments_written {
+    width: 600px;
+    margin: auto;
+    background: white;
+    padding: 15px;
+    border: 2px solid #000;
+    margin-bottom: 50px;
+}
+
+.comment {
+    display: grid;
+    grid-template-columns: 75px auto;
+    grid-template-rows: 1fr;
+    border: 3px solid black;
+    background: #d5e8d4;
+    height: inherit;
+    padding: 8px;
+    margin-bottom: 15px;
+}
+
+.comment_data {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+}
+
+.comment_itself {
+    padding: 0 15px;
+}
+
+.comment_date {
+    align-self: flex-end;
+}
+
+#like_input {
+    /*display: none;*/
+}
+
+.comments_bottom {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.comments_bottom div {
+    line-height: 50px;
+    font-size: 20px;
+}
+
+.message {
+    text-align: center;
+}
