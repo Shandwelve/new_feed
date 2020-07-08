@@ -219,6 +219,12 @@ class DataBase
         $query->execute(['id' => $id]);
     }
 
+    public function deleteImage(string $table, int $id)
+    {
+        $query = $this->connection->prepare("DELETE FROM $table WHERE id = :id");
+        $query->execute(['id' => $id]);
+    }
+
     public function deleteCommentsAuthors(string $table, int $id)
     {
         $query = $this->connection->prepare("DELETE FROM $table WHERE id = :id");

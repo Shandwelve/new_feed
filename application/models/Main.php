@@ -126,6 +126,7 @@ class Main extends Model
         $this->dataBase->deletePost('Feeds', $id);
         $this->dataBase->deleteLikes('Likes', $id);
         $this->dataBase->deleteComments('Comments', $id);
+        $this->dataBase->deleteImage('Images', $id);
 
         foreach ($authors_id as $item) {
             $this->dataBase->deleteCommentsAuthors('Authors', $item['author_id']);
