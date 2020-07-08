@@ -121,8 +121,16 @@ class Main extends Model
     public function deletePost(int $id)
     {
         $image = $this->dataBase->selectImage('Images', $id);
+        $authors_id = $this->dataBase->selectCommentsAuthorsId('Comments', $id);
         $this->dataBase->deleteAuthor('Authors', $id);
         $this->dataBase->deletePost('Feeds', $id);
+        $this->dataBase->deleteLikes('Likes', $id);
+        $this->dataBase->deleteComments('Comments', $id);
+
+        foreach ($authors_id as $item) {
+            $this->dataBase->deleteCommentsAuthors('Authors', $item['author_id']);
+        }
+
         unlink('img/' . $image['image']);
     }
 

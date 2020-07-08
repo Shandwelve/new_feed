@@ -199,6 +199,32 @@ class DataBase
         $query->execute(['id' => $id]);
     }
 
+    public function selectCommentsAuthorsId(string $table, int $id): array
+    {
+        $query = $this->connection->prepare("SELECT author_id FROM $table WHERE feed_id = :id");
+        $query->execute(['id' => $id]);
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteComments(string $table, int $id)
+    {
+        $query = $this->connection->prepare("DELETE FROM $table WHERE feed_id = :id");
+        $query->execute(['id' => $id]);
+    }
+
+    public function deleteLikes(string $table, int $id)
+    {
+        $query = $this->connection->prepare("DELETE FROM $table WHERE feed_id = :id");
+        $query->execute(['id' => $id]);
+    }
+
+    public function deleteCommentsAuthors(string $table, int $id)
+    {
+        $query = $this->connection->prepare("DELETE FROM $table WHERE id = :id");
+        $query->execute(['id' => $id]);
+    }
+
     public function lastInsertId(): string
     {
         return $this->connection->lastInsertId();
