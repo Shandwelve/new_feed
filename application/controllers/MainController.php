@@ -28,8 +28,7 @@ class MainController extends Controller
 
             foreach ($comments as $item) {
                 $comment_authors[] = $this->model->getCommentsAuthors($item['author_id']);
-            }
-;
+            };
             if (!empty($_POST)) {
                 $errors = $this->model->getCommentErrors();
                 if (!isset($errors)) {

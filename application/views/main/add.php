@@ -6,12 +6,16 @@
             </div>
             <div><?= $status ?? '' ?></div>
             <div class="popup_inputs_container">
-                <input type="text" placeholder="title" name="new_title" value="<?= $_POST['new_title'] ?? ''?>">
-                <input type="text" placeholder="first name" name="new_first_name" value="<?= $_POST['new_first_name'] ?? ''?>">
-                <input type="text" placeholder="last name" name="new_last_name" value="<?= $_POST['new_last_name'] ?? ''?>">
-                <input type="date" placeholder="post date" name="new_post_date" value="<?= $_POST['new_post_date'] ?? ''?>">
-                <input type="file" placeholder="post image" name="new_post_image" value="<?= $_FILES['new_post_image']['name']?>">
-                <textarea name="new_description"><?= $_POST['new_description'] ?? ''?></textarea>
+                <input type="text" placeholder="title" name="new_title" value="<?= $_POST['new_title'] ?? '' ?>">
+                <input type="text" placeholder="first name" name="new_first_name"
+                       value="<?= $_POST['new_first_name'] ?? '' ?>">
+                <input type="text" placeholder="last name" name="new_last_name"
+                       value="<?= $_POST['new_last_name'] ?? '' ?>">
+                <input type="date" placeholder="post date" name="new_post_date"
+                       value="<?= $_POST['new_post_date'] ?? '' ?>">
+                <input type="file" placeholder="post image" name="new_post_image"
+                       value="<?= $_FILES['new_post_image']['name'] ?>">
+                <textarea name="new_description"><?= $_POST['new_description'] ?? '' ?></textarea>
             </div>
             <div class="popup_footer">
                 <input type="submit" name="submit">

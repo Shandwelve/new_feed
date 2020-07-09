@@ -2,7 +2,6 @@
 
 namespace application\core;
 
-use http\Params;
 use PDO;
 use PDOException;
 
@@ -56,7 +55,7 @@ class DataBase
         return $result->fetchColumn();
     }
 
-        public function lastInsertId(): int
+    public function lastInsertId(): int
     {
         return $this->connection->lastInsertId();
     }

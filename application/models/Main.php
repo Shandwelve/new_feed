@@ -192,7 +192,8 @@ class Main extends Model
     public function getComments(int $id): array
     {
         $params = ['id' => $id];
-        return $this->dataBase->row("SELECT author_id, content, commented_at FROM Comments WHERE feed_id = :id", $params);
+        return $this->dataBase->row("SELECT author_id, content, commented_at FROM Comments WHERE feed_id = :id",
+            $params);
     }
 
     public function addLikes(int $id)
