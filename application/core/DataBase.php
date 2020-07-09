@@ -1,8 +1,8 @@
 <?php
 
-
 namespace application\core;
 
+use http\Params;
 use PDO;
 use PDOException;
 
@@ -28,219 +28,36 @@ class DataBase
         return true;
     }
 
-    public function selectById(string $table, int $id, string $field): array
+    public function query(string $sql, array $params = []): object
     {
-        $query = $this->connection->prepare("SELECT $field FROM $table WHERE id = :id");
-        $query->execute(['id' => $id]);
+        $statement = $this->connection->prepare($sql);
 
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function selectImages(string $table): array
-    {
-        $query = $this->connection->prepare("SELECT image FROM $table");
-        $query->execute();
-
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function selectImage(string $table, int $id): array
-    {
-        $query = $this->connection->prepare("SELECT image FROM $table WHERE id = :id");
-        $query->execute(['id' => $id]);
-        return $query->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function selectAuthor(string $table, int $feed_id): array
-    {
-        $author_id = $this->connection->prepare("SELECT author_id FROM Feeds WHERE id = :id");
-        $author_id->execute(['id' => $feed_id]);
-        $id = $author_id->fetch(PDO::FETCH_ASSOC);
-        $query = $this->connection->prepare("SELECT first_name, last_name FROM $table WHERE id = :id");
-        $query->execute(['id' => $id['author_id']]);
-
-        return $query->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function selectArticle(string $table, int $id): array
-    {
-        $query = $this->connection->prepare("SELECT title, content, created_at FROM  $table WHERE id = :id;");
-        $query->execute(['id' => $id]);
-
-        return $query->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function checkExistence(string $table, int $id): bool
-    {
-        $query = $this->connection->prepare("SELECT title, content, created_at FROM  $table WHERE id = :id;");
-        $query->execute(['id' => $id]);
-
-        if ($query->fetch(PDO::FETCH_ASSOC)) {
-            return true;
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                $statement->bindValue(":$key", $value);
+            }
         }
 
-        return false;
+        $statement->execute();
+
+        return $statement;
+
     }
 
-    public function selectArticles(string $table): array
+    public function row(string $sql, array $params = []): array
     {
-        $query = $this->connection->prepare("SELECT id, title, content FROM $table");
-        $query->execute();
-
-        return $query->fetchAll(PDO::FETCH_ASSOC);
+        $result = $this->query($sql, $params);
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function addAuthor(string $table, array $params)
+    public function column(string $sql, array $params = []): ?string
     {
-        $query = $this->connection->prepare("INSERT INTO $table (first_name, last_name) VALUES (:first_name, :last_name)");
-        $query->execute(['first_name' => $params['first_name'], 'last_name' => $params['last_name']]);
-
-        return $this->lastInsertId();
+        $result = $this->query($sql, $params);
+        return $result->fetchColumn();
     }
 
-    public function addImage(string $table, string $name): string
-    {
-        $query = $this->connection->prepare("INSERT INTO $table (image) VALUES (:name)");
-        $query->execute(['name' => $name]);
-
-        return $this->lastInsertId();
-    }
-
-    public function addArticle(string $table, array $params): string
-    {
-        $query = $this->connection->prepare("INSERT INTO $table (title, author_id, content, image_id, created_at) 
-                                             VALUES(:title, :author_id, :content, :image_id, :created_at)");
-        $query->execute([
-            'title'      => $params['title'],
-            'author_id'  => $params['author_id'],
-            'content'    => $params['content'],
-            'image_id'   => $params['image_id'],
-            'created_at' => $params['created_at']
-        ]);
-
-        return $this->lastInsertId();
-    }
-
-    public function updateArticle(string $table, array $params, int $id): string
-    {
-        $query = $this->connection->prepare("UPDATE $table SET title = :title, content = :content, created_at = :created_at WHERE id = :id");
-        $query->execute([
-            'title'      => $params['title'],
-            'content'    => $params['content'],
-            'created_at' => $params['created_at'],
-            'id'         => $id
-        ]);
-
-        return $this->lastInsertId();
-    }
-
-    public function deletePost(string $table, int $id)
-    {
-        $query = $this->connection->prepare("DELETE FROM $table WHERE id = :id");
-        $query->execute(['id' => $id]);
-    }
-
-    public function deleteAuthor(string $table, int $id)
-    {
-        $author_id_query = $this->connection->prepare("SELECT author_id FROM Feeds WHERE id = :id");
-        $author_id_query->execute(['id' => $id]);
-        $author_id = $author_id_query->fetch(PDO::FETCH_ASSOC);
-
-        $query = $this->connection->prepare("DELETE FROM $table WHERE id = :id");
-        $query->execute(['id' => $author_id['author_id']]);
-    }
-
-    public function addComment(string $table, array $params): string
-    {
-        $query = $this->connection->prepare("INSERT INTO $table (feed_id, author_id, content, commented_at) 
-                                             VALUES(:feed_id, :author_id, :content, NOW())");
-        $query->execute([
-            'feed_id'   => $params['feed_id'],
-            'author_id' => $params['author_id'],
-            'content'   => $params['content']
-        ]);
-
-        return $this->lastInsertId();
-    }
-
-    public function selectComments(string $table, int $id): array
-    {
-        $query = $this->connection->prepare("SELECT author_id, content, commented_at FROM $table WHERE feed_id = :id");
-        $query->execute(['id' => $id]);
-
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function selectCommentsAuthors(string $table, int $id): array
-    {
-        $query = $this->connection->prepare("SELECT first_name, last_name FROM $table WHERE id = :id");
-        $query->execute(['id' => $id]);
-
-        return $query->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function selectLikes(string $table, int $id): array
-    {
-        $query = $this->connection->prepare("SELECT likes FROM $table WHERE feed_id = :id");
-        $query->execute(['id' => $id]);
-
-        return $query->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function insertLikes(string $table, int $id)
-    {
-        $query = $this->connection->prepare("INSERT INTO $table (feed_id, likes) VALUES (:id, 0)");
-        $query->execute(['id' => $id]);
-    }
-
-    public function updateLikes(string $table, int $id)
-    {
-        $query = $this->connection->prepare("UPDATE $table SET likes = likes + 1 WHERE feed_id = :id");
-        $query->execute(['id' => $id]);
-    }
-
-    public function selectCommentsAuthorsId(string $table, int $id): array
-    {
-        $query = $this->connection->prepare("SELECT author_id FROM $table WHERE feed_id = :id");
-        $query->execute(['id' => $id]);
-
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function deleteComments(string $table, int $id)
-    {
-        $query = $this->connection->prepare("DELETE FROM $table WHERE feed_id = :id");
-        $query->execute(['id' => $id]);
-    }
-
-    public function deleteLikes(string $table, int $id)
-    {
-        $query = $this->connection->prepare("DELETE FROM $table WHERE feed_id = :id");
-        $query->execute(['id' => $id]);
-    }
-
-    public function deleteImage(string $table, int $id)
-    {
-        $query = $this->connection->prepare("DELETE FROM $table WHERE id = :id");
-        $query->execute(['id' => $id]);
-    }
-
-    public function deleteCommentsAuthors(string $table, int $id)
-    {
-        $query = $this->connection->prepare("DELETE FROM $table WHERE id = :id");
-        $query->execute(['id' => $id]);
-    }
-
-    public function lastInsertId(): string
+        public function lastInsertId(): int
     {
         return $this->connection->lastInsertId();
-    }
-
-    public function maxId(string $table): array
-    {
-        $query = $this->connection->prepare("SELECT MAX(id) FROM $table");
-        $query->execute();
-
-        return $query->fetch(PDO::FETCH_ASSOC);
     }
 }

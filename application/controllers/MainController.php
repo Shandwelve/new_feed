@@ -20,7 +20,7 @@ class MainController extends Controller
         if ($this->model->checkExistence($this->route['id'])) {
             $result = $this->model->getArticle($this->route['id']);
             $image = $this->model->getImage($this->route['id']);
-            $article_author = $this->model->getAuthor($this->route['id']);
+            $article_author = $this->model->getArticleAuthor($this->route['id']);
             $comments = $this->model->getComments($this->route['id']);
             $likes = $this->model->getLikes($this->route['id']);
             $comment_authors = [];
@@ -29,7 +29,7 @@ class MainController extends Controller
             foreach ($comments as $item) {
                 $comment_authors[] = $this->model->getCommentsAuthors($item['author_id']);
             }
-
+;
             if (!empty($_POST)) {
                 $errors = $this->model->getCommentErrors();
                 if (!isset($errors)) {
@@ -83,7 +83,7 @@ class MainController extends Controller
             View::errorCode(404);
         } else {
             $result = $this->model->getArticle($this->route['id']);
-            $author = $this->model->getAuthor($this->route['id']);
+            $author = $this->model->getArticleAuthor($this->route['id']);
             if (empty($_POST)) {
                 $this->view->render('Edit', ['data' => $result, 'author' => $author]);
             } else {

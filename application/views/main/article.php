@@ -12,18 +12,18 @@
 <div class="article_container">
     <div class="article_header">
         <div>
-            <?= $data['title']; ?>
+            <?= $data[0]['title']; ?>
         </div>
         <div>
-            <span><?= $article_author['first_name'] . ' ' . $article_author['last_name'] ?></span>
-            <span><?= $data['created_at']; ?></span>
+            <span><?= $article_author[0]['first_name'] . ' ' . $article_author[0]['last_name'] ?></span>
+            <span><?= $data[0]['created_at']; ?></span>
         </div>
     </div>
     <div class="article_image">
-        <img src="/img/<?php echo $image['image']; ?>" alt="">
+        <img src="/img/<?php echo $image; ?>" alt="">
     </div>
     <div class="article_description">
-        <?= $data['content'] ?>
+        <?= $data[0]['content'] ?>
     </div>
 </div>
 <div class="comments_container">
@@ -59,7 +59,7 @@
                 <div class="comment">
                     <div class="comment_data">
                         <div class="comment_author">
-                            <?= $comment_authors[$i]['first_name'] . ' ' . $comment_authors[$i]['last_name'] ?>
+                            <?= $comment_authors[$i][0]['first_name'] . ' ' . $comment_authors[$i][0]['last_name'] ?>
                         </div>
                         <div class="comment_date">
                             <?= $comments[$i]['commented_at']; ?>

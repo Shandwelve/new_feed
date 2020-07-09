@@ -8,32 +8,42 @@ class Main extends Model
 {
     public function getArticles(): array
     {
-        return $this->dataBase->selectArticles('Feeds');
+        return $this->dataBase->row("SELECT id, title, content, created_at FROM Feeds");
     }
 
     public function getImages(): array
     {
-        return $this->dataBase->selectImages('Images');
+        return $this->dataBase->row("SELECT image FROM Images");
     }
 
-    public function getImage(int $id): array
+    public function getImage(int $id): string
     {
-        return $this->dataBase->selectImage('Images', $id);
+        $params = ['id' => $id];
+        return $this->dataBase->column("SELECT image FROM Images WHERE id = :id", $params);
     }
 
     public function getArticle(int $id): array
     {
-        return $this->dataBase->selectArticle('Feeds', $id);
+        $params = ['id' => $id];
+        return $this->dataBase->row("SELECT title, content, created_at FROM Feeds WHERE id = :id", $params);
     }
 
-    public function getAuthor(int $id): array
+    public function getArticleAuthor(int $id): array
     {
-        return $this->dataBase->selectAuthor('Authors', $id);
+        $params = ['id' => $id];
+        $author_id = $this->dataBase->column("SELECT author_id FROM Feeds WHERE id = :id", $params);
+        $params = ['id' => $author_id];
+
+        return $this->dataBase->row("SELECT first_name, last_name FROM Authors WHERE id = :id", $params);
     }
 
     public function checkExistence(int $id): bool
     {
-        return $this->dataBase->checkExistence('Feeds', $id);
+        $params = ['id' => $id];
+        if ($this->dataBase->column("SELECT id FROM  Feeds WHERE id = :id", $params)) {
+            return true;
+        }
+        return false;
     }
 
     public function previewDescription(array $articles, int $offset = 200): array
@@ -81,19 +91,21 @@ class Main extends Model
     {
         $extension = pathinfo($name['name'], PATHINFO_EXTENSION);
         move_uploaded_file($name['tmp_name'], 'img/' . "$id.$extension");
-        $this->dataBase->addImage('Images', "$id.$extension");
+        $params = ['image' => "$id.$extension"];
+        $this->dataBase->query("INSERT INTO Images(image) VALUES(:image)", $params);
     }
 
     public function addPost(): int
     {
         $author = ['first_name' => $_POST['new_first_name'], 'last_name' => $_POST['new_last_name']];
-        $author_id = $this->dataBase->addAuthor('Authors', $author);
-        $image = $this->dataBase->maxId('Images');
+        $this->dataBase->query("INSERT INTO Authors (first_name, last_name) VALUES (:first_name, :last_name)", $author);
+        $author_id = $this->dataBase->lastInsertId();
+        $image = $this->dataBase->column('SELECT MAX(id) FROM Images');
         $feed = [
             'title'      => $_POST['new_title'],
             'author_id'  => $author_id,
             'content'    => $_POST['new_description'],
-            'image_id'   => $image['MAX(id)'] + 1,
+            'image_id'   => $image + 1,
             'created_at' => $_POST['new_post_date']
         ];
 
@@ -108,31 +120,37 @@ class Main extends Model
         }
     }
 
-    public function editPost(int $id): int
+    public function editPost(int $id)
     {
         $feed = [
             'title'      => $_POST['new_title'],
             'content'    => $_POST['new_description'],
-            'created_at' => $_POST['new_post_date']
+            'created_at' => $_POST['new_post_date'],
+            'id'         => $id
         ];
-        return $this->dataBase->updateArticle('Feeds', $feed, $id);
+
+        $this->dataBase->query("UPDATE Feeds SET title = :title, content = :content, created_at = :created_at WHERE id = :id",
+            $feed);
     }
 
     public function deletePost(int $id)
     {
-        $image = $this->dataBase->selectImage('Images', $id);
-        $authors_id = $this->dataBase->selectCommentsAuthorsId('Comments', $id);
-        $this->dataBase->deleteAuthor('Authors', $id);
-        $this->dataBase->deletePost('Feeds', $id);
-        $this->dataBase->deleteLikes('Likes', $id);
-        $this->dataBase->deleteComments('Comments', $id);
-        $this->dataBase->deleteImage('Images', $id);
+        $params = ['id' => $id];
+        $image = $this->dataBase->column("SELECT image FROM Images WHERE id = :id", $params);
+        $author_id = $this->dataBase->column("SELECT author_id FROM Feeds WHERE id = :id", $params);
+        $comments_authors = $this->dataBase->row("SELECT author_id FROM Comments WHERE feed_id = :id", $params);
 
-        foreach ($authors_id as $item) {
-            $this->dataBase->deleteCommentsAuthors('Authors', $item['author_id']);
+        $this->dataBase->query("DELETE FROM Authors WHERE id = :id", ['id' => $author_id]);
+        $this->dataBase->query("DELETE FROM Feeds WHERE id = :id", $params);
+        $this->dataBase->query("DELETE FROM Likes WHERE id = :id", $params);
+        $this->dataBase->query("DELETE FROM Comments WHERE id = :id", $params);
+        $this->dataBase->query("DELETE FROM Images WHERE id = :id", $params);
+
+        foreach ($comments_authors as $item) {
+            $this->dataBase->query("DELETE FROM Authors WHERE id = :id", ['id' => $item['author_id']]);
         }
 
-        unlink('img/' . $image['image']);
+        unlink('img/' . $image);
     }
 
     public function getCommentErrors(): ?string
@@ -158,46 +176,40 @@ class Main extends Model
     public function addComment(int $id)
     {
         $author = ['first_name' => $_POST['comment_first_name'], 'last_name' => $_POST['comment_last_name']];
-        $author_id = $this->dataBase->addAuthor('Authors', $author);
+        $this->dataBase->query("INSERT INTO Authors (first_name, last_name) VALUES (:first_name, :last_name)", $author);
+        $author_id = $this->dataBase->lastInsertId();
         $params = ['feed_id' => $id, 'author_id' => $author_id, 'content' => $_POST['comment_message']];
-        $this->dataBase->addComment('Comments', $params);
+        $this->dataBase->query("INSERT INTO Comments (feed_id, author_id, content, commented_at)
+                                VALUES(:feed_id, :author_id, :content, NOW())", $params);
     }
 
     public function getCommentsAuthors(int $id): array
     {
-        return $this->dataBase->selectCommentsAuthors('Authors', $id);
+        $params = ['id' => $id];
+        return $this->dataBase->row("SELECT first_name, last_name FROM Authors WHERE id = :id", $params);
     }
 
     public function getComments(int $id): array
     {
-        return $this->dataBase->selectComments('Comments', $id);
+        $params = ['id' => $id];
+        return $this->dataBase->row("SELECT author_id, content, commented_at FROM Comments WHERE feed_id = :id", $params);
     }
 
     public function addLikes(int $id)
     {
-        $this->dataBase->insertLikes('Likes', $id);
+        $params = ['id' => $id];
+        $this->dataBase->query("INSERT INTO Likes (feed_id, likes) VALUES (:id, 0)", $params);
     }
 
     public function updateLikes(int $id)
     {
-        $this->dataBase->updateLikes('Likes', $id);
+        $params = ['id' => $id];
+        $this->dataBase->query("UPDATE Likes SET likes = likes + 1 WHERE feed_id = :id", $params);
     }
 
     public function getLikes(int $id): int
     {
-        return $this->dataBase->selectLikes('Likes', $id)['likes'];
+        $params = ['id' => $id];
+        return $this->dataBase->column("SELECT likes FROM Likes WHERE feed_id = :id", $params);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
