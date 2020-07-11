@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
     <a href="/article/<?= $articles[$i]['id']; ?>">
         <li class="news_container">
             <div class="news_image">
-                <img src="/img/<?= $images[$i]['image'] ?>" alt="image">
+                <img class="b-lazy" src="" data-src="/img/<?= $images[$i]['image'] ?>" alt="image">
             </div>
             <div class="news_description_container">
                 <div class="news_title">

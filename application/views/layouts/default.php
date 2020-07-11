@@ -19,6 +19,7 @@
 <footer>
     footer
 </footer>
+<script src="/js/blazy.min.js"></script>
 <script src="/js/main.js"></script>
 </body>
 

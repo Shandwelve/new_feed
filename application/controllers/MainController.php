@@ -11,9 +11,9 @@ class MainController extends Controller
     public function index()
     {
         $articlesNumber = $this->model->getArticlesNumber();
-        $pagination = new Pagination($this->route, $articlesNumber, 2);
+        $pagination = new Pagination($this->route, $articlesNumber, 10);
         $pages = $pagination->getHtml();
-        $result = $this->model->getArticles($pagination->getStart(), 2);
+        $result = $this->model->getArticles($pagination->getStart(), 10);
         $preview = $this->model->previewDescription($result);
         $images = $this->model->getImages();
         $this->view->render('Main Page', ['articles' => $preview, 'images' => $images, 'pages' => $pages]);
