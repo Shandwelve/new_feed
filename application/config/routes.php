@@ -5,6 +5,10 @@ return [
         'controller' => 'main',
         'action'     => 'index'
     ],
+    'page/{page:\d+}'  => [
+        'controller' => 'main',
+        'action'     => 'index'
+    ],
     'article/{id:\d+}' => [
         'controller' => 'main',
         'action'     => 'article'

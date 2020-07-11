@@ -27,20 +27,21 @@ class DataBase
         return true;
     }
 
-    public function query(string $sql, array $params = []): object
+    public function query($sql, $params = [])
     {
         $statement = $this->connection->prepare($sql);
-
         if (!empty($params)) {
             foreach ($params as $key => $value) {
-                $statement->bindValue(":$key", $value);
+                if (is_int($value)) {
+                    $type = PDO::PARAM_INT;
+                } else {
+                    $type = PDO::PARAM_STR;
+                }
+                $statement->bindValue(':' . $key, $value, $type);
             }
         }
-
         $statement->execute();
-
         return $statement;
-
     }
 
     public function row(string $sql, array $params = []): array

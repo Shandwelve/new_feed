@@ -6,9 +6,16 @@ use application\core\Model;
 
 class Main extends Model
 {
-    public function getArticles(): array
+    public function getArticles(int $start, int $max = 10): array
     {
-        return $this->dataBase->row("SELECT id, title, content, created_at FROM Feeds");
+        $params = ['start' => $start, 'max' => $max];
+        return $this->dataBase->row("SELECT id, title, content, created_at FROM Feeds ORDER BY id DESC LIMIT :start, :max",
+            $params);
+    }
+
+    public function getArticlesNumber(): int
+    {
+        return $this->dataBase->column("SELECT COUNT(id) FROM Feeds ");
     }
 
     public function getImages(): array
@@ -109,7 +116,10 @@ class Main extends Model
             'created_at' => $_POST['new_post_date']
         ];
 
-        return $this->dataBase->addArticle('Feeds', $feed);
+        $this->dataBase->query("INSERT INTO Feeds (title, author_id, content, image_id, created_at) 
+                                VALUES(:title, :author_id, :content, :image_id, :created_at)", $feed);
+
+        return $this->dataBase->lastInsertId();
     }
 
     public function editImage(int $id)

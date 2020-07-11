@@ -4,15 +4,19 @@ namespace application\controllers;
 
 use application\core\Controller;
 use application\core\View;
+use application\core\Pagination;
 
 class MainController extends Controller
 {
     public function index()
     {
-        $result = $this->model->getArticles();
+        $articlesNumber = $this->model->getArticlesNumber();
+        $pagination = new Pagination($this->route, $articlesNumber, 2);
+        $pages = $pagination->getHtml();
+        $result = $this->model->getArticles($pagination->getStart(), 2);
         $preview = $this->model->previewDescription($result);
         $images = $this->model->getImages();
-        $this->view->render('Main Page', ['articles' => $preview, 'images' => $images]);
+        $this->view->render('Main Page', ['articles' => $preview, 'images' => $images, 'pages' => $pages]);
     }
 
     public function article()

@@ -296,3 +296,23 @@ footer {
 .message {
     text-align: center;
 }
+
+.pages {
+    display: grid;
+    list-style: none;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(19, 1fr);
+    place-items: center;
+}
+
+.current_page {
+    grid-column: 10/11;;
+}
+
+.back_btn {
+    grid-column: 9/10;
+}
+
+.forward_btn {
+    grid-column: 11/12;
+}
