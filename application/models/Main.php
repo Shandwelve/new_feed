@@ -18,9 +18,10 @@ class Main extends Model
         return $this->dataBase->column("SELECT COUNT(id) FROM Feeds ");
     }
 
-    public function getImages(): array
+    public function getImages(int $start, int $limit): array
     {
-        return $this->dataBase->row("SELECT image FROM Images");
+        $params = ['start' => $start, 'max' => $limit];
+        return $this->dataBase->row("SELECT image FROM Images ORDER BY id DESC LIMIT :start, :max", $params);
     }
 
     public function getImage(int $id): string
@@ -202,7 +203,7 @@ class Main extends Model
     public function getComments(int $id): array
     {
         $params = ['id' => $id];
-        return $this->dataBase->row("SELECT author_id, content, commented_at FROM Comments WHERE feed_id = :id",
+        return $this->dataBase->row("SELECT author_id, content, commented_at FROM Comments ORDER BY id DESC WHERE feed_id = :id",
             $params);
     }
 

@@ -10,12 +10,14 @@ class MainController extends Controller
 {
     public function index()
     {
+        $limit = 2;
         $articlesNumber = $this->model->getArticlesNumber();
-        $pagination = new Pagination($this->route, $articlesNumber, 10);
+        $pagination = new Pagination($this->route, $articlesNumber, $limit);
         $pages = $pagination->getHtml();
-        $result = $this->model->getArticles($pagination->getStart(), 10);
+        $start = $pagination->getStart();
+        $result = $this->model->getArticles($start, $limit);
         $preview = $this->model->previewDescription($result);
-        $images = $this->model->getImages();
+        $images = $this->model->getImages($start, $limit);
         $this->view->render('Main Page', ['articles' => $preview, 'images' => $images, 'pages' => $pages]);
     }
 
