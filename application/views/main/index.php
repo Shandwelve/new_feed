@@ -14,7 +14,7 @@ if (isset($_POST['submit'])) {
 ?>
 
 <?php for ($i = 0; $i < count($articles); $i++): ?>
-    <a href="/article/<?= $articles[$i]['id']; ?>">
+    <a href="/show/<?= $articles[$i]['id']; ?>">
         <li class="news_container">
             <div class="news_image">
                 <img class="b-lazy" src="" data-src="/img/<?= $images[$i]['image'] ?>" alt="image">

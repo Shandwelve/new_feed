@@ -1,8 +1,8 @@
 <?php
 return [
     'driver'   => 'mysql',
-    'host'     => '192.168.100.10',
+    'host'     => 'localhost',
     'name'     => 'news_feed',
     'username' => 'root',
-    'password' => '1'
+    'password' => 'root'
 ];

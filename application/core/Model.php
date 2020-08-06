@@ -12,7 +12,7 @@ abstract class Model
     public function __construct()
     {
         $this->dataBase = DataBase::getInstance();
-        $config = require_once 'application/config/dataBase.php';
+        $config = require 'application/config/dataBase.php';
         $this->dataBase->connect($config);
     }
 

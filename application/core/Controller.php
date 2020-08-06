@@ -11,11 +11,13 @@ abstract class Controller
     protected object $view;
     protected object $model;
 
-    public function __construct(array $route)
+    public function __construct(array $route = [])
     {
-        $this->route = $route;
-        $path = 'application\models\\' . ucfirst($route['controller']);
-        $this->view = new View($this->route);
-        $this->model = new $path;
+        if (!empty($route)) {
+            $this->route = $route;
+            $path = 'application\models\\' . ucfirst($route['controller']);
+            $this->view = new View($this->route);
+            $this->model = new $path;
+        }
     }
 }
