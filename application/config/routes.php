@@ -24,5 +24,9 @@ return [
     'delete/{id:\d+}'  => [
         'controller' => 'article',
         'action'     => 'delete'
+    ],
+    'signin' => [
+        'controller' => 'account',
+        'action' => 'signin'
     ]
 ];
