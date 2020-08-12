@@ -1,32 +1,36 @@
 <?php
 
 return [
-    ''                 => [
+    ''                => [
         'controller' => 'main',
         'action'     => 'index'
     ],
-    'page/{page:\d+}'  => [
+    'page/{page:\d+}' => [
         'controller' => 'main',
         'action'     => 'index'
     ],
-    'show/{id:\d+}' => [
+    'show/{id:\d+}'   => [
         'controller' => 'article',
         'action'     => 'show'
     ],
-    'add'              => [
+    'add'             => [
         'controller' => 'article',
         'action'     => 'add'
     ],
-    'edit/{id:\d+}'    => [
+    'edit/{id:\d+}'   => [
         'controller' => 'article',
         'action'     => 'edit'
     ],
-    'delete/{id:\d+}'  => [
+    'delete/{id:\d+}' => [
         'controller' => 'article',
         'action'     => 'delete'
     ],
-    'signin' => [
+    'signin'          => [
         'controller' => 'account',
-        'action' => 'signin'
+        'action'     => 'signin'
+    ],
+    'signup'          => [
+        'controller' => 'account',
+        'action'     => 'signup'
     ]
 ];
