@@ -23,6 +23,7 @@ class ArticleController extends Controller
             $comment_authors = [];
             $status = '';
 
+            $result[0]['created_at'] =  date('g:i a \o\n l jS F Y', strtotime($result[0]['created_at']));
             foreach ($comments_content as $item) {
                 $comment_authors[] = $comment->getCommentsAuthors($item['author_id']);
             };
@@ -60,7 +61,7 @@ class ArticleController extends Controller
     public function add()
     {
         if (empty($_POST)) {
-            $this->view->render('Add', ['status' => 'Complete fields!']);
+            $this->view->render('Add', ['status' => 'Add article!']);
         } else {
             $errors = $this->model->getArticleErrors('add');
             if (!isset($errors)) {

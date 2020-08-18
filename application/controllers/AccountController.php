@@ -10,42 +10,56 @@ class AccountController extends Controller
 {
     public function signin()
     {
-        $username = 'Test';
-        $password = 'test';
+        if (empty($_POST)) {
+            $this->view->render('Signin', ['status' => 'Signin']);
+        }
+        else {
+            $username = $_POST['username'];
+            $password = $_POST['password'];
 
-        if ($this->model->checkExistence($username, $password)) {
-            $_SESSION['account'] = $this->model->getRole($username);
-            var_dump($_SESSION['account']);
-            echo 'Welcome ' . $username;
-        } else {
-            echo 'Signin Error';
+            if ($this->model->checkExistence($username, $password)) {
+                $_SESSION['account'] = $this->model->getRole($username);
+                $_SESSION['username'] = $username;
+                $this->view->redirect('');
+            } else {
+                $this->view->render('Signin', ['status' => 'Invalid username or password!']);
+            }
         }
     }
 
     public function signup()
     {
-        $first_name = 'Test';
-        $last_name = 'Test';
-        $username = 'Test';
-        $email = 'test@gmail.com';
-        $password = 'test';
-        $confirm_password = 'test';
-        $data = [
-            'first_name'       => $first_name,
-            'last_name'        => $last_name,
-            'username'         => $username,
-            'email'            => $email,
-            'password'         => $password,
-            'confirm_password' => $confirm_password
-        ];
-        $errors = $this->model->validateData($data);
-        if (empty($errors)) {
-            $data['password'] = $this->model->passwordHash($data['password']);
-            unset($data['confirm_password']);
-            echo 'Success';
-            $this->model->createAccount($data);
-        } else {
-            echo $errors;
+        if (empty($_POST)) {
+            $this->view->render('Signup', ['status' => 'Register']);
         }
+        else {
+            $data = [
+                'first_name'       => $_POST['first_name'],
+                'last_name'        => $_POST['last_name'],
+                'username'         => $_POST['username'],
+                'email'            => $_POST['email'],
+                'password'         => $_POST['password'],
+                'confirm_password' => $_POST['confirm']
+            ];
+            $errors = $this->model->validateData($data);
+            if (empty($errors)) {
+                $data['password'] = $this->model->passwordHash($data['password']);
+                unset($data['confirm_password']);
+                $this->model->createAccount($data);
+                $_SESSION['username'] = $_POST['username'];
+                $_SESSION['account'] = 'user';
+                $this->view->redirect('');
+            } else {
+                $this->view->render('Signup', ['status' => $errors]);
+            }
+        }
+
+    }
+
+    public function signout()
+    {
+        $_SESSION['account'] = 'all';
+        unset($_SESSION['username']);
+        $this->view->redirect('');
     }
 }

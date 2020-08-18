@@ -32,5 +32,9 @@ return [
     'signup'          => [
         'controller' => 'account',
         'action'     => 'signup'
+    ],
+    'signout'          => [
+        'controller' => 'account',
+        'action'     => 'signout'
     ]
 ];

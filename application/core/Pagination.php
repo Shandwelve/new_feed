@@ -42,20 +42,28 @@ class Pagination
 
     public function getHtml(): string
     {
-        $backPage = null;
-        $forwardPage = null;
-        $currentPage = null;
         $back = $this->currentPage - 1;
         $forward = $this->currentPage + 1;
+        $backPage = '';
+        $forwardPage = '';
 
-        $currentPage = '<li class="current_page"><a href="#">' . $this->currentPage . '</a></li>';
+        $currentPage = '<li class="page-item active" aria-current="page"><a class="page-link" href="#">' . $this->currentPage . ' <span class="sr-only">(current)</span></a></li>';
 
         if ($this->currentPage > 1) {
-            $backPage = '<li class="navigation_btn back_btn"><a href="/page/' . $back . '">' . 'Back' . '</a></li>';
+            $previous = '<li class="page-item"> <a class="page-link" href="/page/' . $back . '" tabindex="-1" aria-disabled="true">Previous</a> </li>';
+            $backPage = '<li class="page-item"><a class="page-link" href="/page/' . $back . '">' . $back . '</a></li>';
+        } else {
+            $previous = '<li class="page-item disabled"> <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a> </li>';
         }
+
         if ($this->currentPage < $this->amount) {
-            $forwardPage = '<li class="navigation_btn forward_btn"><a href="/page/' . $forward . '">' . 'Forward' . '</a></li>';
+            $next = '<li class="page-item"> <a class="page-link" href="/page/' . $forward . '" tabindex="-1" aria-disabled="true">Next</a> </li>';
+            $forwardPage = '<li class="page-item"><a class="page-link" href="/page/' . $forward . '">' . $forward . '</a></li>';
+        } else {
+            $next = '<li class="page-item disabled"> <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a> </li>';
         }
-        return '<ul class="pages">' . $backPage . $currentPage . $forwardPage . '</ul>';
+
+        return '<nav aria-label="..." class="d-flex justify-content-center">
+        <ul class="pagination">' . $previous . $backPage . $currentPage . $forwardPage . $next . '</ul> </nav>';
     }
 }

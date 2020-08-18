@@ -11,7 +11,6 @@ class Account extends Model
     {
         $params = ['username' => $username];
         $hash = $this->dataBase->column("SELECT password FROM Account WHERE username = :username", $params);
-        var_dump(password_verify($password, $hash));
         if (password_verify($password, $hash)) {
             return true;
         }

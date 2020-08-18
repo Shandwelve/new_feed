@@ -1,77 +1,70 @@
-<div class="buttons_tab">
-    <button id="button_delete_article">
-        <a href="/delete/<?= $this->route['id'] ?>">Delete</a>
-    </button>
+<style>
+    body {
+        padding-top: 56px;
+    }
+</style>
 
-    <button id="button_update_article" class="popup_button">
-        <a href="/edit/<?= $this->route['id'] ?>">Edit</a>
-    </button>
+<div class="container">
 
-</div>
+    <div class="row justify-content-center">
 
-<div class="article_container">
-    <div class="article_header">
-        <div>
-            <?= $data[0]['title']; ?>
-        </div>
-        <div>
-            <span><?= $article_author[0]['first_name'] . ' ' . $article_author[0]['last_name'] ?></span>
-            <span><?= $data[0]['created_at']; ?></span>
-        </div>
-    </div>
-    <div class="article_image">
-        <img src="/img/<?php echo $image; ?>" alt="">
-    </div>
-    <div class="article_description">
-        <?= $data[0]['content'] ?>
-    </div>
-</div>
-<div class="comments_container">
-    <div class="comments_header">
-        comments
-    </div>
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
 
-    <div class="message"><?= $status ?></div>
-    <form action="/show/<?= $this->route['id'] ?>" method="POST">
-        <div class="comments_inputs_container">
-            <div class="comments_name_inputs_container">
-                <input type="text" placeholder="first name" name="comment_first_name"
-                       value="<?= $_POST['comment_first_name'] ?? '' ?>">
-                <input type="text" placeholder="last name" name="comment_last_name"
-                       value="<?= $_POST['comment_last_name'] ?? '' ?>">
-            </div>
-            <textarea name="comment_message" id="" cols="30" rows="10"><?= $_POST['comment_message'] ?? '' ?></textarea>
-            <div class="comments_bottom">
-                <div>
-                    <input type="checkbox" id="like_input" name="like">
-                    <label for="like_input">Like</label>
+            <!-- Title -->
+            <h1 class="mt-4"><?= $data[0]['title']; ?></h1>
+
+            <!-- Author -->
+            <p class="lead">
+                by
+                <?= $article_author[0]['username'] ?>
+            </p>
+
+            <hr>
+
+            <!-- Date/Time -->
+            <p><?= $data[0]['created_at']; ?></p>
+
+            <hr>
+
+            <!-- Preview Image -->
+            <img class="img-fluid rounded" src="/img/<?php echo $image; ?>" alt="image">
+
+            <hr>
+
+            <!-- Post Content -->
+            <p class="lead"><?= $data[0]['content'] ?></p>
+
+            <hr>
+
+            <!-- Comments Form -->
+            <div class="card my-4">
+                <h5 class="card-header">Leave a Comment:</h5>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
-                <input type="submit" value="Comment" name="add_comment">
             </div>
-        </div>
-    </form>
 
-    <div class="message"><?= $likes ?> likes</div>
-
-    <div class="comments_written">
-        <?php if (!empty($comments)): ?>
+            <!-- Single Comment -->
+            <?php if (!empty($comments)): ?>
             <?php for ($i = 0; $i < count($comments); $i++): ?>
-                <div class="comment">
-                    <div class="comment_data">
-                        <div class="comment_author">
-                            <?= $comment_authors[$i][0]['first_name'] . ' ' . $comment_authors[$i][0]['last_name'] ?>
-                        </div>
-                        <div class="comment_date">
-                            <?= $comments[$i]['commented_at']; ?>
-                        </div>
-                    </div>
-                    <div class="comment_itself">
-                        <?= $comments[$i]['content'] ?>
-                    </div>
+            <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle" src="https://img.pngio.com/user-profile-avatar-login-account-svg-png-icon-free-download-user-profile-png-980_982.png"  width="50px" height="50px" alt="">
+                <div class="media-body">
+                    <h5 class="mt-0"><?= $comment_authors[$i][0]['first_name'] . ' ' . $comment_authors[$i][0]['last_name'] ?></h5>
+                    <?= $comments[$i]['content'] ?>
                 </div>
+            </div>
             <?php endfor; ?>
-        <?php else: ?>
+            <?php else: ?>
             <?= 'No comments' ?>
-        <?php endif ?>
-    </div>
+            <?php endif ?>
+        </div>
 
+    </div>
+</div>

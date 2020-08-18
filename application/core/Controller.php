@@ -13,9 +13,10 @@ abstract class Controller
 
     public function __construct(array $route)
     {
-        $_SESSION['account'] = 'all';
+        if (!isset($_SESSION['account'])){
+            $_SESSION['account'] = 'all';
+        }
         $this->route = $route;
-        //      var_dump(password_hash('123', PASSWORD_BCRYPT ));
         if ($this->checkAccess()){
             $path = 'application\models\\' . ucfirst($route['controller']);
             $this->view = new View($this->route);
@@ -26,10 +27,10 @@ abstract class Controller
         }
     }
 
-    public function checkAccess():bool
+    public function checkAccess(): bool
     {
         $access = require 'application/config/access.php';
-        if (in_array($this->route['action'] ,$access[$_SESSION['account']]) || in_array($this->route['action'] ,$access['all'])){
+        if (in_array($this->route['action'], $access['all']) || in_array($this->route['action'], $access[$_SESSION['account']])){
             return true;
         }
         return false;

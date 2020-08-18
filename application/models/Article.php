@@ -24,7 +24,7 @@ class Article extends Model
         $author_id = $this->dataBase->column("SELECT author_id FROM Feeds WHERE id = :id", $params);
         $params = ['id' => $author_id];
 
-        return $this->dataBase->row("SELECT first_name, last_name FROM Authors WHERE id = :id", $params);
+        return $this->dataBase->row("SELECT username FROM Account WHERE id = :id", $params);
     }
 
     public function checkExistence(int $id): bool
@@ -43,11 +43,8 @@ class Article extends Model
         if (empty($_POST['new_title'])) {
             $errors[] = 'Pls enter title!';
         }
-        if (empty($_POST['new_first_name'])) {
-            $errors[] = 'Pls enter first name!';
-        }
-        if (empty($_POST['new_last_name'])) {
-            $errors[] = 'Pls enter last name!';
+        if (empty($_POST['new_post_time'])) {
+            $errors[] = 'Pls post time!';
         }
         if (empty($_POST['new_post_date'])) {
             $errors[] = 'Pls enter post date!';
@@ -75,16 +72,14 @@ class Article extends Model
 
     public function addPost(): int
     {
-        $author = ['first_name' => $_POST['new_first_name'], 'last_name' => $_POST['new_last_name']];
-        $this->dataBase->query("INSERT INTO Authors (first_name, last_name) VALUES (:first_name, :last_name)", $author);
-        $author_id = $this->dataBase->lastInsertId();
+        $author_id = $this->dataBase->column("SELECT id FROM Account WHERE username = :username", ['username' => $_SESSION['username']]);
         $image = $this->dataBase->column('SELECT MAX(id) FROM Images');
         $feed = [
             'title'      => $_POST['new_title'],
             'author_id'  => $author_id,
             'content'    => $_POST['new_description'],
             'image_id'   => $image + 1,
-            'created_at' => $_POST['new_post_date']
+            'created_at' => $_POST['new_post_date']. ' ' . $_POST['new_post_time']
         ];
 
         $this->dataBase->query("INSERT INTO Feeds (title, author_id, content, image_id, created_at) 
