@@ -14,7 +14,7 @@ abstract class Controller
     public function __construct(array $route)
     {
         if (!isset($_SESSION['account'])){
-            $_SESSION['account'] = 'all';
+            $_SESSION['account'] = 'guest';
         }
         $this->route = $route;
         if ($this->checkAccess()){

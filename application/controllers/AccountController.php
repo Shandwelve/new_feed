@@ -58,7 +58,7 @@ class AccountController extends Controller
 
     public function signout()
     {
-        $_SESSION['account'] = 'all';
+        $_SESSION['account'] = 'guest';
         unset($_SESSION['username']);
         $this->view->redirect('');
     }

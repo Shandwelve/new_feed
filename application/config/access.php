@@ -3,19 +3,22 @@
 return [
     'all' => [
         'index',
-        'show',
+        'show'
+    ],
+    'guest' => [
         'signin',
         'signup'
     ],
     'users' => [
-        'comment',
+        'addComment',
         'signout'
     ],
     'admin' => [
         'add',
         'edit',
         'delete',
-        'comment',
+        'addComment',
+        'deleteComment',
         'signout'
     ]
 ];

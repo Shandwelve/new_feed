@@ -11,7 +11,7 @@
         resize: none;
     }
 </style>
-    
+
 <div class="container register">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -25,8 +25,6 @@
                             <label for="name" class="cols-sm-2 control-label">Title</label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-user fa"
-                                                                       aria-hidden="true"></i></span>
                                     <input type="text" class="form-control" name="new_title"
                                            value="<?= $_POST['new_title'] ?? '' ?>" id="name"
                                            placeholder="Enter title"/>
@@ -37,7 +35,6 @@
                             <label for="date" class="cols-sm-2 control-label">Post date</label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                                     <input type="date" class="form-control" name="new_post_date"
                                            value="<?= $_POST['new_post_date'] ?? '' ?>" id="date"
                                            placeholder="Enter post date"/>
@@ -48,7 +45,6 @@
                             <label for="time" class="cols-sm-2 control-label">Post time</label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                                     <input type="time" class="form-control" name="new_post_time"
                                            value="<?= $_POST['new_post_time'] ?? '' ?>" id="time"
                                            placeholder="Enter post time"/>
@@ -59,8 +55,6 @@
                             <label for="image" class="cols-sm-2 control-label">Image</label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-users fa"
-                                                                       aria-hidden="true"></i></span>
                                     <input type="file" class="form-control" name="new_post_image"
                                            value="<?= $_FILES['new_post_image']['name'] ?>" id="image"/>
                                 </div>
@@ -70,8 +64,6 @@
                             <label for="content" class="cols-sm-2 control-label">Content</label>
                             <div class="cols-sm-10">
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-users fa"
-                                                                       aria-hidden="true"></i></span>
                                     <textarea name="new_description" id="content" cols="30" rows="10"
                                               class="form-control"><?= $_POST['new_description'] ?? '' ?></textarea>
                                 </div>

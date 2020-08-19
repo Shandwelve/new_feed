@@ -107,7 +107,7 @@ class Article extends Model
         $feed = [
             'title'      => $_POST['new_title'],
             'content'    => $_POST['new_description'],
-            'created_at' => $_POST['new_post_date'],
+            'created_at' => $_POST['new_post_date']. ' ' .$_POST['new_post_time'],
             'id'         => $id
         ];
 
