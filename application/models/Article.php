@@ -72,14 +72,15 @@ class Article extends Model
 
     public function addPost(): int
     {
-        $author_id = $this->dataBase->column("SELECT id FROM Account WHERE username = :username", ['username' => $_SESSION['username']]);
+        $author_id = $this->dataBase->column("SELECT id FROM Account WHERE username = :username",
+            ['username' => $_SESSION['username']]);
         $image = $this->dataBase->column('SELECT MAX(id) FROM Images');
         $feed = [
             'title'      => $_POST['new_title'],
             'author_id'  => $author_id,
             'content'    => $_POST['new_description'],
             'image_id'   => $image + 1,
-            'created_at' => $_POST['new_post_date']. ' ' . $_POST['new_post_time']
+            'created_at' => $_POST['new_post_date'] . ' ' . $_POST['new_post_time']
         ];
 
         $this->dataBase->query("INSERT INTO Feeds (title, author_id, content, image_id, created_at) 
@@ -107,7 +108,7 @@ class Article extends Model
         $feed = [
             'title'      => $_POST['new_title'],
             'content'    => $_POST['new_description'],
-            'created_at' => $_POST['new_post_date']. ' ' .$_POST['new_post_time'],
+            'created_at' => $_POST['new_post_date'] . ' ' . $_POST['new_post_time'],
             'id'         => $id
         ];
 

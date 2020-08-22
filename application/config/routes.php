@@ -1,23 +1,23 @@
 <?php
 
 return [
-    ''                    => [
+    ''                       => [
         'controller' => 'main',
         'action'     => 'index'
     ],
-    'page/{page:\d+}'     => [
+    'page/{page:\d+}'        => [
         'controller' => 'main',
         'action'     => 'index'
     ],
-    'show/{id:\d+}'       => [
+    'show/{id:\d+}'          => [
         'controller' => 'article',
         'action'     => 'show'
     ],
-    'add'                 => [
+    'add'                    => [
         'controller' => 'article',
         'action'     => 'add'
     ],
-    'addComment/{id:\d+}' => [
+    'addComment/{id:\d+}'    => [
         'controller' => 'article',
         'action'     => 'addComment'
     ],
@@ -25,23 +25,31 @@ return [
         'controller' => 'article',
         'action'     => 'deleteComment'
     ],
-    'edit/{id:\d+}'       => [
+    'addLike/{id:\d+}'       => [
+        'controller' => 'article',
+        'action'     => 'addLike'
+    ],
+    'addDislike/{id:\d+}'    => [
+        'controller' => 'article',
+        'action'     => 'addDislike'
+    ],
+    'edit/{id:\d+}'          => [
         'controller' => 'article',
         'action'     => 'edit'
     ],
-    'delete/{id:\d+}'     => [
+    'delete/{id:\d+}'        => [
         'controller' => 'article',
         'action'     => 'delete'
     ],
-    'signin'              => [
+    'signin'                 => [
         'controller' => 'account',
         'action'     => 'signin'
     ],
-    'signup'              => [
+    'signup'                 => [
         'controller' => 'account',
         'action'     => 'signup'
     ],
-    'signout'             => [
+    'signout'                => [
         'controller' => 'account',
         'action'     => 'signout'
     ]

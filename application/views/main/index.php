@@ -103,7 +103,8 @@
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
                             <div class="img-container">
-                                <img src="/img/<?= $images[$i]['image'] ?>" alt="<?= $images[$i]['image'] ?>" width="100%" height="225">
+                                <img src="/img/<?= $images[$i]['image'] ?>" alt="<?= $images[$i]['image'] ?>"
+                                     width="100%" height="225">
                             </div>
                             <div class="card-body">
                                 <p class="card-caption"><?= $articles[$i]['title'] ?></p>

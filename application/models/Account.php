@@ -45,10 +45,12 @@ class Account extends Model
         if ($data['password'] !== $data['confirm_password']) {
             $errors[] = 'Password does not match!';
         }
-        if (!empty($this->dataBase->column("SELECT id FROM Account WHERE username = :username", ['username' => $data['username']]))){
+        if (!empty($this->dataBase->column("SELECT id FROM Account WHERE username = :username",
+            ['username' => $data['username']]))) {
             $errors[] = 'Username is already busy!';
         }
-        if (!empty($this->dataBase->column("SELECT id FROM Account WHERE email = :email", ['email' => $data['email']]))){
+        if (!empty($this->dataBase->column("SELECT id FROM Account WHERE email = :email",
+            ['email' => $data['email']]))) {
             $errors[] = 'Email is already busy!';
         }
 

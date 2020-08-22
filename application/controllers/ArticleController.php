@@ -19,27 +19,25 @@ class ArticleController extends Controller
             $image = $this->model->getImage($this->route['id']);
             $article_author = $this->model->getArticleAuthor($this->route['id']);
             $comments_content = $comment->getComments($this->route['id']);
-            $likes_number = $like->getLikes($this->route['id']);
+            $likes_number = $like->getAppreciationNumber($this->route['id'], 'like');
+            $dislikes_number = $like->getAppreciationNumber($this->route['id'], 'dislike');
+            $like_status = $like->checkAppreciation($this->route['id'], 'like');
+            $dislike_status = $like->checkAppreciation($this->route['id'], 'dislike');
             $comment_authors = [];
             $comments_status = 'Leave a comment!';
+
+            $appreciation = [
+                'like_status'     => $like_status,
+                'dislike_status'  => $dislike_status,
+                'likes_number'    => $likes_number,
+                'dislikes_number' => $dislikes_number
+            ];
 
             $result[0]['created_at'] = date('g:i a \o\n l jS F Y', strtotime($result[0]['created_at']));
             foreach ($comments_content as $item) {
                 $comment_authors[] = $comment->getCommentsAuthors($item['author_id']);
             };
 
-//            if (!empty($_POST)) {
-//                $errors = $comment->getCommentErrors();
-//                if (!isset($errors)) {
-//                    if (isset($_POST['like'])) {
-//                        $like->updateLikes($this->route['id']);
-//                    }
-//                    $comment->addComment($this->route['id']);
-//                    $this->view->redirect('show/' . $this->route['id']);
-//                } else {
-//                    $comments_status = $errors;
-//                }
-//            }
 
             $this->view->render('Article',
                 [
@@ -49,7 +47,7 @@ class ArticleController extends Controller
                     'comments'        => $comments_content,
                     'comment_authors' => $comment_authors,
                     'comments_status' => $comments_status,
-                    'likes'           => $likes_number
+                    'appreciation'    => $appreciation
                 ]);
 
         } else {
@@ -77,19 +75,19 @@ class ArticleController extends Controller
 
     public function addComment()
     {
-            $comment = new Comment();;
-            $errors = $comment->getCommentErrors();
-            if (!isset($errors)) {
-                $comment->addComment($this->route['id']);
-            }
-            $this->view->redirect('show/' . $this->route['id']);
+        $comment = new Comment();;
+        $errors = $comment->getCommentErrors();
+        if (!isset($errors)) {
+            $comment->addComment($this->route['id']);
+        }
+        $this->view->redirect('show/' . $this->route['id']);
     }
 
     public function deleteComment()
     {
-            $comment = new Comment();
-            $id = $comment->deleteComment($this->route['id']);
-            $this->view->redirect('show/' . $id);
+        $comment = new Comment();
+        $id = $comment->deleteComment($this->route['id']);
+        $this->view->redirect('show/' . $id);
     }
 
     public function edit()
@@ -124,5 +122,19 @@ class ArticleController extends Controller
             $this->model->deletePost($this->route['id']);
             $this->view->redirect('');
         }
+    }
+
+    public function addLike()
+    {
+        $like = new Like();
+        $like->addAppreciation($this->route['id'], 'like');
+        $this->view->redirect('show/' . $this->route['id']);
+    }
+
+    public function addDislike()
+    {
+        $like = new Like();
+        $like->addAppreciation($this->route['id'], 'dislike');
+        $this->view->redirect('show/' . $this->route['id']);
     }
 }

@@ -12,8 +12,7 @@ class AccountController extends Controller
     {
         if (empty($_POST)) {
             $this->view->render('Signin', ['status' => 'Signin']);
-        }
-        else {
+        } else {
             $username = $_POST['username'];
             $password = $_POST['password'];
 
@@ -31,8 +30,7 @@ class AccountController extends Controller
     {
         if (empty($_POST)) {
             $this->view->render('Signup', ['status' => 'Register']);
-        }
-        else {
+        } else {
             $data = [
                 'first_name'       => $_POST['first_name'],
                 'last_name'        => $_POST['last_name'],

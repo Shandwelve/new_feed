@@ -2,6 +2,7 @@
     body {
         background: #dedede;
     }
+
     .page-wrap {
         min-height: 100vh;
     }

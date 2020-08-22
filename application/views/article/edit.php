@@ -19,7 +19,8 @@
                 <div class="card-header"><?= $status ?></div>
                 <div class="card-body">
 
-                    <form class="form-horizontal" method="post" action="/edit/<?= $this->route['id'] ?>" enctype="multipart/form-data">
+                    <form class="form-horizontal" method="post" action="/edit/<?= $this->route['id'] ?>"
+                          enctype="multipart/form-data">
 
                         <div class="form-group">
                             <label for="name" class="cols-sm-2 control-label">Title</label>

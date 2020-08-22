@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'all' => [
+    'all'   => [
         'index',
         'show'
     ],
@@ -9,8 +9,10 @@ return [
         'signin',
         'signup'
     ],
-    'users' => [
+    'user'  => [
         'addComment',
+        'addLike',
+        'addDislike',
         'signout'
     ],
     'admin' => [
@@ -19,6 +21,8 @@ return [
         'delete',
         'addComment',
         'deleteComment',
+        'addLike',
+        'addDislike',
         'signout'
     ]
 ];
