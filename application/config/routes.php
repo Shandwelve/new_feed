@@ -17,6 +17,10 @@ return [
         'controller' => 'article',
         'action'     => 'add'
     ],
+    'getComments/{id:\d+}' => [
+        'controller' => 'article',
+        'action'     => 'getComments'
+    ],
     'addComment/{id:\d+}'    => [
         'controller' => 'article',
         'action'     => 'addComment'

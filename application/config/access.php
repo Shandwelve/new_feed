@@ -10,6 +10,7 @@ return [
         'signup'
     ],
     'user'  => [
+        'getComments',
         'addComment',
         'addLike',
         'addDislike',
@@ -19,6 +20,7 @@ return [
         'add',
         'edit',
         'delete',
+        'getComments',
         'addComment',
         'deleteComment',
         'addLike',

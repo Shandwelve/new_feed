@@ -9,20 +9,30 @@ class Main extends Model
     public function getArticles(int $start, int $max = 10): array
     {
         $params = ['start' => $start, 'max' => $max];
-        return $this->dataBase->row("SELECT id, title, content, created_at FROM Feeds ORDER BY id DESC LIMIT :start, :max",
-            $params);
+        return $this->dataBase->row("
+                                SELECT 
+                                    feeds.id, feeds.title, feeds.content, feeds.created_at, images.image
+                                FROM 
+                                    feeds
+                                JOIN images ON feeds.image_id = images.id
+                                ORDER BY 
+                                    id 
+                                DESC LIMIT 
+                                    :start, :max",
+            $params
+        );
     }
 
     public function getArticlesNumber(): int
     {
-        return $this->dataBase->column("SELECT COUNT(id) FROM Feeds ");
+        return $this->dataBase->column("
+                                SELECT 
+                                    COUNT(id) 
+                                FROM 
+                                feeds "
+        );
     }
 
-    public function getImages(int $start, int $limit): array
-    {
-        $params = ['start' => $start, 'max' => $limit];
-        return $this->dataBase->row("SELECT image FROM Images ORDER BY id DESC LIMIT :start, :max", $params);
-    }
 
     public function previewDescription(array $articles, int $offset = 200): array
     {

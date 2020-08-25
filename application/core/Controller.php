@@ -29,10 +29,8 @@ abstract class Controller
     public function checkAccess(): bool
     {
         $access = require 'application/config/access.php';
-        if (in_array($this->route['action'], $access['all']) || in_array($this->route['action'],
-                $access[$_SESSION['account']])) {
-            return true;
-        }
-        return false;
+        return in_array($this->route['action'], $access['all']) || in_array($this->route['action'],
+                $access[$_SESSION['account']]);
+
     }
 }

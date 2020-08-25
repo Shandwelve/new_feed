@@ -9,18 +9,35 @@ class Account extends Model
 {
     public function checkExistence(string $username, string $password): bool
     {
-        $params = ['username' => $username];
-        $hash = $this->dataBase->column("SELECT password FROM Account WHERE username = :username", $params);
-        if (password_verify($password, $hash)) {
-            return true;
-        }
-        return false;
+        $hash = $this->dataBase->column("
+                SELECT
+                    password 
+                FROM 
+                    account 
+                WHERE 
+                    username = :username",
+                [
+                    'username' => $username
+                ]
+        );
+
+      return password_verify($password, $hash);
+
     }
 
-    public function getRole(string $username): string
+    public function getUserData(string $username): array
     {
-        $params = ['username' => $username];
-        return $this->dataBase->column("SELECT role FROM Account WHERE username = :username", $params);
+        return $this->dataBase->row("
+                SELECT 
+                    id, role, username, email, first_name, last_name
+                FROM 
+                    account 
+                WHERE 
+                    username = :username",
+                [
+                    'username' => $username
+                ]
+        );
     }
 
     public function validateData(array $data): ?string
@@ -28,19 +45,19 @@ class Account extends Model
         $errors = [];
 
         if (empty($data['first_name'])) {
-            $errors[] = 'Pls enter first name!';
+            $errors[] = 'Please enter first name!';
         }
         if (empty($data['last_name'])) {
-            $errors[] = 'Pls enter last name!';
+            $errors[] = 'Please enter last name!';
         }
         if (empty($data['username'])) {
-            $errors[] = 'Pls enter username!';
+            $errors[] = 'Please enter username!';
         }
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors[] = 'Invalid email';
         }
         if (empty($data['password'])) {
-            $errors[] = 'Pls enter password!';
+            $errors[] = 'Please enter password!';
         }
         if ($data['password'] !== $data['confirm_password']) {
             $errors[] = 'Password does not match!';
@@ -65,9 +82,16 @@ class Account extends Model
         return password_hash($password, PASSWORD_BCRYPT);
     }
 
-    public function createAccount(array $data)
+    public function createAccount(array $data): int
     {
-        $this->dataBase->query('INSERT INTO Account (first_name, last_name, username, email, password) VALUES (:first_name, :last_name, :username, :email, :password)',
-            $data);
+        $this->dataBase->query("
+        INSERT 
+            account 
+        SET
+            first_name = :first_name, last_name = :last_name, username = :username, email = :email, password = :password",
+            $data
+        );
+
+        return $this->dataBase->lastInsertId();
     }
 }

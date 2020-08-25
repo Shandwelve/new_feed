@@ -17,7 +17,8 @@ class MainController extends Controller
         $start = $pagination->getStart();
         $result = $this->model->getArticles($start, $limit);
         $preview = $this->model->previewDescription($result);
-        $images = $this->model->getImages($start, $limit);
-        $this->view->render('Main Page', ['articles' => $preview, 'images' => $images, 'pages' => $pages]);
+
+        $this->view->addComponent(['articles' => $preview, 'pages' => $pages]);
+        $this->view->render('Main Page');
     }
 }

@@ -1,36 +1,3 @@
-<style>
-    @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
-
-    body {
-        margin: 0;
-        font-size: .9rem;
-        font-weight: 400;
-        line-height: 1.6;
-        color: #212529;
-        text-align: left;
-        background-color: #f5f8fa;
-    }
-
-    .my-form .row {
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .login-form {
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
-    }
-
-    .login-form .row {
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    main {
-        margin: 281px auto;
-    }
-
-</style>
 <main class="login-form">
     <div class="cotainer">
         <div class="row justify-content-center">
@@ -56,7 +23,7 @@
 
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    Register
+                                    Sign in
                                 </button>
                             </div>
                     </div>

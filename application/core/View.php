@@ -12,17 +12,25 @@ class View
     {
         $this->route = $route;
         $this->path = $route['controller'] . '/' . $route['action'];
+        ob_start();
     }
 
-    public function render(string $title, array $vars = ['status' => ''])
+    public function render(string $title)
+    {
+        $content = ob_get_clean();
+        require_once 'application/views/layouts/' . $this->layout . '.php';
+    }
+
+    public function addComponent(array $vars = [], string $component = '')
     {
         extract($vars);
-        $path = "application/views/$this->path.php";
+        if (empty($component)) {
+            $path = "application/views/$this->path.php";
+        } else {
+            $path = "application/views/components/$component.php";
+        }
         if (file_exists($path)) {
-            ob_start();
             require_once $path;
-            $content = ob_get_clean();
-            require_once 'application/views/layouts/' . $this->layout . '.php';
         }
     }
 

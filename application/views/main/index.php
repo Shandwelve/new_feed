@@ -1,64 +1,3 @@
-<style>
-    .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
-    .jumbotron {
-        padding-top: 3rem;
-        padding-bottom: 3rem;
-        margin-bottom: 0;
-        background-color: #fff;
-    }
-
-    @media (min-width: 768px) {
-        .jumbotron {
-            padding-top: 6rem;
-            padding-bottom: 6rem;
-        }
-    }
-
-    .jumbotron p:last-child {
-        margin-bottom: 0;
-    }
-
-    .jumbotron h1 {
-        font-weight: 300;
-    }
-
-    .jumbotron .container {
-        max-width: 40rem;
-    }
-
-    .img-container {
-        position: relative;
-    }
-
-    .card-caption {
-        font-weight: bold;
-        font-size: 24px;
-    }
-
-    footer {
-        padding-top: 3rem;
-        padding-bottom: 3rem;
-    }
-
-    footer p {
-        margin-bottom: .25rem;
-    }
-
-    @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-            font-size: 3.5rem;
-        }
-    }
-</style>
-
 <main role="main">
 
     <?php if ($_SESSION['account'] === 'user'): ?>
@@ -89,8 +28,8 @@
                 <p class="lead text-muted">To view articles add comments and appreciate articles and comments with
                     like or dislike edit signin or signup.</p>
                 <p>
-                    <a href="/signin" class="btn btn-primary my-2">Signin</a>
-                    <a href="/signup" class="btn btn-primary my-2">Signup</a>
+                    <a href="/signin" class="btn btn-primary my-2">Sign in</a>
+                    <a href="/signup" class="btn btn-primary my-2">Sign up</a>
                 </p>
             </div>
         </section>
@@ -103,7 +42,7 @@
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm">
                             <div class="img-container">
-                                <img src="/img/<?= $images[$i]['image'] ?>" alt="<?= $images[$i]['image'] ?>"
+                                <img src="/img/<?= $articles[$i]['image'] ?>" alt="<?= $articles[$i]['image'] ?>"
                                      width="100%" height="225">
                             </div>
                             <div class="card-body">
